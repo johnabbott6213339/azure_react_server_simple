@@ -1,0 +1,65 @@
+# Node.js with React
+# Build a Node.js project that uses React.
+# Add steps that analyze code, save build artifacts, deploy, and more:
+# https://docs.microsoft.com/azure/devops/pipelines/languages/javascript
+trigger:
+- main  # 设置触发 Pipeline 的分支
+
+pool:
+  vmImage: 'ubuntu-latest'  # 选择适合你项目的虚拟机镜像
+
+steps:
+- task: NodeTool@0
+  inputs:
+    versionSpec: '18.x'  # Node.js 版本
+
+- script: |
+    npm install
+    npm run build
+  displayName: 'Install and build'
+
+- task: PublishBuildArtifacts@1
+  inputs:
+    pathtoPublish: 'build'  # 发布构建产物的路径，这里假设构建后文件位于 build 文件夹下
+    artifactName: 'react-app'  # 产物名称，可以自定义
+
+
+
+# trigger:
+# - main
+
+# variables:
+#    uiSource: 'src'
+#    uiBuild: '$(uiSource)/build'
+# pool:
+#   vmImage: ubuntu-latest
+
+# steps:
+# - task: NodeTool@0
+#   inputs:
+#     versionSpec: '10.x'
+#   displayName: 'Install Node.js'
+
+# - script: |
+#     pushd $(uiSource)
+#     npm install
+#     npm run build
+#     popd
+#   displayName: 'npm install and build'
+
+# steps:
+# - task: NodeTool@0
+#   inputs:
+#     versionSpec: '10.x'
+#   displayName: 'Install Node.js'
+
+
+# - task: PublishBuildArtifacts@2
+
+# - task: ArchiveFiles@2
+#   inputs:
+#     rootFolderOrFile: '$(uiBuild)'
+#     includeRootFolder: false
+#     archiveType: 'zip'
+#     archiveFile: '$(Build.ArtifactStagingDirectory)/$(Build.BuildId).zip'
+#     replaceExistingArchive: true
